@@ -75,6 +75,7 @@ Out of the 5 data sets listed above, choose **2** that appeal to you based on th
 
 1: Write 1st choice here
 Boulder
+
 2: Write 2nd choice here
 Squirrel
 
@@ -282,12 +283,11 @@ Show the first 6 rows of the tidied data.
 ```{r}
 boulder_tidy <- boulder %>%
   
-  # Create a numeric sale price variable by removing dollar signs and commas
   mutate(
     sale_price = as.numeric(str_remove_all(SALE_PRICE, "[$,]"))
   ) %>%
   
-  # Select only the variables needed for the analysis
+  
   select(
     sale_price,
     bedrooms = BEDROOMS,
@@ -387,12 +387,11 @@ Here is an example of a specific, explicit debug:
 
 ## Generative AI Statement
 
-Generative AI (through [LIST MODELS USED, i.e. ChatGPT, CoPilot)] was used to
-help me complete  this assignment in the following ways.
+Generative AI (through [LIST MODELS USED, i.e. ChatGPT, CoPilot)] was used to help me complete  this assignment in the following ways.
 
-1. [Describe here]
+1. Claude Code was used to help troubleshoot an error when importing the Boulder dataset. It helped me identify that the dataset was located in the dat/ folder and that the file path needed to include dat/.
 
-2. [Describe here]
+2. Claude Code was used to help troubleshoot GitHub and Positron synchronization issues, including saving the .qmd file, checking Git status, creating commits, and pushing the commits to my public GitHub repository.
 
 ...
 
