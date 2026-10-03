@@ -217,7 +217,19 @@ Your task is to create a table that calculates the proportion of missing values 
 
 ```{r}
 ### Explore missingness here ###
-
+boulder %>%
+  summarize(
+    across(
+      everything(),
+      ~ mean(is.na(.))
+    )
+  ) %>%
+  pivot_longer(
+    cols = everything(),
+    names_to = "variable",
+    values_to = "proportion_missing"
+  ) %>%
+  arrange(desc(proportion_missing))
 ```
 
 
@@ -240,6 +252,7 @@ Based on this definition, is missingness an issue for your analysis? If so, desc
 If missingness is not an issue, describe why.
 
 <!-------------------------- Start your work below ---------------------------->
+Missingness is not an issue for my analysis because the variables that are directly related to my research questions do not have more than 20% missing values. In particular, the variables for sale price, number of bedrooms, and account type have sufficient data for the analysis. Although some other variables in the Boulder dataset have missing values, they are not relevant to my research questions. Therefore, I will continue with my original research questions.
 
 
 
@@ -267,7 +280,23 @@ Show the first 6 rows of the tidied data.
 
 <!-------------------------- Start your work below ---------------------------->
 ```{r}
+boulder_tidy <- boulder %>%
+  
+  # Create a numeric sale price variable by removing dollar signs and commas
+  mutate(
+    sale_price = as.numeric(str_remove_all(SALE_PRICE, "[$,]"))
+  ) %>%
+  
+  # Select only the variables needed for the analysis
+  select(
+    sale_price,
+    bedrooms = BEDROOMS,
+    account_type = ACCOUNT_TYPE
+  )
 
+# Show the first 6 rows of the tidied dataset
+boulder_tidy %>%
+  slice_head(n = 6)
 
 
 
@@ -284,8 +313,17 @@ Show the outputted table.
 
 <!-------------------------- Start your work below ---------------------------->
 ```{r}
-
-
+boulder_tidy %>%
+  summarize(
+    across(
+      where(is.numeric),
+      list(
+        mean = ~ mean(.x, na.rm = TRUE),
+        min = ~ min(.x, na.rm = TRUE),
+        max = ~ max(.x, na.rm = TRUE)
+      )
+    )
+  )
 
 
 ```
